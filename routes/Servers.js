@@ -78,7 +78,7 @@ router.post(`/create`,auth.verifyToken, auth.isAdmin, async (req, res) => {
 });
 
 router.put('/:id',auth.verifyToken, auth.isAdmin,  async (req, res) => {
-   console.log(req.body)
+    // console.log(req.body)
     const updatedServer = await Server.findByIdAndUpdate(
         req.params.id,
         {
