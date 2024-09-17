@@ -120,12 +120,12 @@ router.put('/:id', async (req, res) => {
         newPassword = userExist.passwordHash;
     }
 
+
     const user = await User.findByIdAndUpdate(
         req.params.id,
         {
             name: req.body.name,
             passwordHash: newPassword,
-            role: req.body.role
         },
         { new: true }
     );

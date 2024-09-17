@@ -35,7 +35,19 @@ router.get(`/`, async (req, res) => {
 
 //gets logged user servers
 router.get(`/my`,auth.verifyToken , async (req, res) => {
-    const server = await Server.find();
+    const server = await Server.find({owenerID: req.userId});
+  
+    if (!server) {
+        res.status(500).json({ success: false });
+    }
+    res.send(server);
+});
+
+router.get(`/user`,auth.verifyToken , async (req, res) => {
+
+    const UserId = new mongoose.Types.ObjectId(req.userId);
+
+    const server = await Server.find({usersID: { $in: [UserId] } });
   
     if (!server) {
         res.status(500).json({ success: false });
@@ -67,6 +79,7 @@ router.post(`/create`,auth.verifyToken, auth.isAdmin, async (req, res) => {
     let server = new Server({
         name: req.body.name, 
         ip: req.body.ip,
+        owenerID: req.body.owenerID,
         usersID: req.body.usersID            
     });
 
@@ -78,12 +91,13 @@ router.post(`/create`,auth.verifyToken, auth.isAdmin, async (req, res) => {
 });
 
 router.put('/:id',auth.verifyToken, auth.isAdmin,  async (req, res) => {
-   console.log(req.body)
     const updatedServer = await Server.findByIdAndUpdate(
         req.params.id,
         {
             name: req.body.name,
             ip: req.body.ip,
+            usersID: req.body.usersID 
+            
         },
         { new: true }
     );

@@ -9,6 +9,10 @@ const serverSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    owenerID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     usersID: [
         {
             type: mongoose.Schema.Types.ObjectId,

@@ -40,16 +40,16 @@ app.use(`${api}/scripts`, scriptsRoutes);
 
 //Database
 mongoose
-    .connect(process.env.CONNECTION_STRING, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+    .connect("mongodb://localhost:27017/", {
+        // useNewUrlParser: true,
+        // useUnifiedTopology: true,
         dbName: 'automate'
     })
     .then(() => {
         console.log('Database Connection is ready...');
     })
     .catch((err) => {
-        console.log(err);
+        console.log('Cannot connect to Database: ',err);
     });
 
 
