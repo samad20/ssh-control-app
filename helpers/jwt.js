@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { User } = require("../models/user");
+const { Server } = require("../models/server");
 
 
 const secret = process.env.secret;
@@ -65,11 +66,26 @@ isAdmin =async (req, res, next) => {
   });
 };
 
+isServerUser =async (req, res, next) => {
+  await Server.findOne({_id: req.userId}).then(server => {
+        if (server.usersID.includes(req.userId)) {
+          next();
+          return;
+        }
+    
+        res.status(403).send({
+            message: "Require Server User!"
+        });
+        return;
+  });
+};
+
 
 
 const authJwt = {
   verifyToken: verifyToken,
   verifyTokenPassword: verifyTokenPassword,
   isAdmin: isAdmin,
+  isServerUser:isServerUser,
 };
 module.exports = authJwt;

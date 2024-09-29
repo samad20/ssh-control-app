@@ -24,14 +24,14 @@ require('dotenv/config');
 
 
 //App routes
-router.get(`/`, async (req, res) => {
-    const ServerList = await Server.find();
+// router.get(`/`, async (req, res) => {
+//     const ServerList = await Server.find();
 
-    if (!ServerList) {
-        res.status(500).json({ success: false });
-    }
-    res.send(ServerList);
-});
+//     if (!ServerList) {
+//         res.status(500).json({ success: false });
+//     }
+//     res.send(ServerList);
+// });
 
 //gets logged user servers
 router.get(`/my`,auth.verifyToken , async (req, res) => {
@@ -57,7 +57,7 @@ router.get(`/user`,auth.verifyToken , async (req, res) => {
 
 
 //get a Server by id in params
-router.get(`/byId/:id`,auth.verifyToken,  async (req, res) => {
+router.get(`/byId/:id`,auth.verifyToken, auth.isServerUser,  async (req, res) => {
 
     if (!mongoose.isValidObjectId(req.params.id)) {
         return res.status(400).send('Invalid Server Id');

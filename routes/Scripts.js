@@ -92,6 +92,11 @@ wss.on('connection', (ws, req) => {
                     return;
                 }
 
+                if(!server.usersID.includes(decoded.userId)){
+                    ws.send(JSON.stringify({ success: false, message: 'Not your Server' }));
+                    return;
+                }
+
                 const decryptedPassword = decryptPassword(script.sshPass);
 
                 const conn = new Client();
