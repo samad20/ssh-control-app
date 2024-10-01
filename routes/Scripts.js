@@ -133,6 +133,12 @@ wss.on('connection', (ws, req) => {
                     password: decryptedPassword,
                 });
 
+                conn.on('error', (err) => {
+                    console.log('SSH ERROR: ', err)
+                    ws.send(JSON.stringify({output: '' + err}))
+
+                })
+
             } catch (error) {
                 ws.send(JSON.stringify({ error: 'An error occurred: ' + error.message }));
             }

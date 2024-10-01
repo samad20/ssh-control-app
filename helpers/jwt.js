@@ -67,7 +67,7 @@ isAdmin =async (req, res, next) => {
 };
 
 isServerUser =async (req, res, next) => {
-  await Server.findOne({_id: req.userId}).then(server => {
+  await Server.findOne({_id: req.params.id}).then(server => {
         if (server.usersID.includes(req.userId)) {
           next();
           return;
